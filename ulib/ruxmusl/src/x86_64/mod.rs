@@ -412,6 +412,9 @@ pub fn syscall(syscall_id: SyscallId, args: [usize; 6]) -> isize {
             #[cfg(feature = "multitask")]
             SyscallId::GETTID => ruxos_posix_api::sys_gettid() as _,
 
+            #[cfg(feature = "signal")]
+            SyscallId::TKILL => ruxos_posix_api::sys_tkill(args[0] as pid_t, args[1] as c_int) as _,
+
             #[cfg(feature = "multitask")]
             SyscallId::FUTEX => ruxos_posix_api::sys_futex(
                 args[0],

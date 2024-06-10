@@ -107,7 +107,9 @@ pub use imp::pthread::{
     sys_pthread_setspecific,
 };
 #[cfg(feature = "signal")]
-pub use imp::signal::{sys_getitimer, sys_kill, sys_setitimer, sys_sigaction, sys_sigaltstack};
+pub use imp::signal::{
+    sys_getitimer, sys_kill, sys_setitimer, sys_sigaction, sys_sigaltstack, sys_tkill,
+};
 
 #[cfg(feature = "multitask")]
 pub use imp::pthread::futex::sys_futex;

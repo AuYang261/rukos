@@ -81,6 +81,6 @@ SECTIONS
     _ekernel = .;
 
 	/DISCARD/ : {
-        *(.comment) *(.gnu*) *(.note*) *(.eh_frame*)
+        *(.comment) *(.gnu*) *(.note*)
     }
 }

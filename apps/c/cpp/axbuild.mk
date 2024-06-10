@@ -20,7 +20,7 @@ $(std_benchmark_dir):
 	cd $(APP)/ && git clone --recursive https://github.com/hiraditya/std-benchmark
 	patch -p1 -N -d $(std_benchmark_dir) --no-backup-if-mismatch -r - < $(APP)/std_benchmark.patch
 
-$(APP)/$(app-objs): build_std-benchmark
+$(APP)/$(app-objs): build_test
 build_std-benchmark: $(std_benchmark_dir) $(APP)/axbuild.mk
 	cd $(std_benchmark_dir) && mkdir -p build && cd build && \
 		$(CMAKE) .. -DCMAKE_CXX_STANDARD=$(CXX_STD) -DCMAKE_C_COMPILER=$(C_COMPILER) -DCMAKE_CXX_COMPILER=$(CXX_COMPILER) -DCMAKE_AR=$(AR) -DCMAKE_RANLIB=$(RANLIB) \
@@ -43,6 +43,14 @@ ifneq ($(filter $(bench),$(benches_available)),)
 else
 	$(error "Available benches: $(benches_available)")
 endif
+
+build_test: $(APP)/axbuild.mk $(APP)/main.cpp
+	$(CXX_COMPILER) -o $(APP)/main.cpp.o $(APP)/main.cpp -std=c++11 -c -O0 -g
+	$(LD) -o $(app-objs) -nostdlib -static -no-pie -r -e main \
+		$(APP)/main.cpp.o \
+		$(CROSS_COMPILE_PATH)/*-linux-musl/lib/libstdc++.a \
+		$(CROSS_COMPILE_PATH)/*-linux-musl/lib/libatomic.a \
+		$(CROSS_COMPILE_PATH)/lib/gcc/*-linux-musl/*/libgcc_eh.a 
 
 clean_c::
 	rm -rf $(std_benchmark_build)/

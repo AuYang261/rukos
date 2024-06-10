@@ -4,3 +4,4 @@ irq
 multitask
 fs
 random-hw
+signal

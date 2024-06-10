@@ -207,6 +207,9 @@ pub enum SyscallId {
     #[cfg(feature = "multitask")]
     GETTID = 186,
 
+    #[cfg(feature = "signal")]
+    TKILL = 200,
+
     #[cfg(feature = "multitask")]
     FUTEX = 202,
 
